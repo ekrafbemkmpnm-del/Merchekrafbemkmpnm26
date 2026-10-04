@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KMPNM Merchandise</title>
+    <title> Merchandise</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
@@ -59,30 +59,18 @@
         .qris-area { display: none; text-align: center; }
         .qris-img { width: 250px; height: 250px; background: #fff; margin: 20px auto; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #000; }
 
-        /* =========================================
-           KODE AJAIB UNTUK TAMPILAN HP (MOBILE) 
-           ========================================= */
         @media (max-width: 768px) {
             nav { padding: 15px 5%; }
             .logo { font-size: 1.2rem; }
             .btn-primary { padding: 8px 15px; font-size: 0.85rem; }
-            
-            /* Mengecilkan judul raksasa di HP */
             .hero { padding: 120px 5% 50px; min-height: auto; }
             .hero-text h1 { font-size: 2.2rem; }
             .hero-text p { font-size: 1rem; }
-            
             .popular { padding: 30px 5%; }
             .popular h2 { font-size: 1.8rem; margin-bottom: 25px; }
-            
-            /* Kontak berjejer ke bawah di HP */
             .contact-container { flex-direction: column; gap: 15px; }
             .contact-card { padding: 20px; width: 100%; }
-            
-            /* Keranjang di HP disesuaikan posisinya */
             .floating-cart { bottom: 20px; right: 20px; padding: 12px 20px; font-size: 1rem; }
-            
-            /* Grid produk akan otomatis jadi 1 kolom di layar HP kecil */
             .grid-cards { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
             .glass-card { padding: 10px; }
             .card-title { font-size: 1.1rem; }
@@ -99,7 +87,6 @@
     <section class="hero">
         <div class="hero-text gsap-hero">
             <h1>Koleksi Merchandise 2026</h1>
-            <!-- Teks jualan yang baru -->
             <p>Miliki koleksi merchandise eksklusif dan original BEM KMPNM. Lengkapi gayamu dengan produk kebanggaan kampus!</p>
             <button class="btn-primary" onclick="document.querySelector('.popular').scrollIntoView({behavior: 'smooth'})">Mulai Belanja</button>
         </div>
@@ -109,13 +96,9 @@
     <section class="popular">
         <h2 class="gsap-title">Katalog Produk</h2>
         <div class="grid-cards">
-            
             <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('lanyard.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Lanyard</h3><p class="card-price">Rp 17.000</p><button class="btn-primary buy-btn" data-id="1" data-nama="Lanyard" data-harga="17000">+ Keranjang</button></div>
-            
             <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('gelas.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Gelas Custom</h3><p class="card-price">Rp 26.000</p><button class="btn-primary buy-btn" data-id="2" data-nama="Gelas Custom" data-harga="26000">+ Keranjang</button></div>
-            
             <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('totebag.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Totebag Custom</h3><p class="card-price">Rp 35.500</p><button class="btn-primary buy-btn" data-id="3" data-nama="Totebag Custom" data-harga="35500">+ Keranjang</button></div>
-            
             <div class="glass-card gsap-card" style="grid-column: span 1;">
                 <div class="card-img" style="background-image: url('stiker.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div>
                 <h3 class="card-title">Stiker KMPNM</h3>
@@ -125,13 +108,9 @@
                     <button class="btn-primary buy-btn" data-id="5" data-nama="Stiker Anti Air" data-harga="10500" style="font-size: 0.9rem; padding: 8px;">Anti Air (Rp 10.500)</button>
                 </div>
             </div>
-
             <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('kaoskaki.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Kaos Kaki Putih</h3><p class="card-price">Rp 16.000</p><button class="btn-primary buy-btn" data-id="6" data-nama="Kaos Kaki Putih" data-harga="16000">+ Keranjang</button></div>
-            
             <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('notebook.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Note Book Custom A5</h3><p class="card-price">Rp 15.500</p><button class="btn-primary buy-btn" data-id="7" data-nama="Note Book Custom A5" data-harga="15500">+ Keranjang</button></div>
-            
             <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('keychain-kereta.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Keychain (Kereta)</h3><p class="card-price">Rp 16.000</p><button class="btn-primary buy-btn" data-id="8" data-nama="Keychain (Kereta)" data-harga="16000">+ Keranjang</button></div>
-            
             <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('keychain-pnm.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Keychain (Logo PNM)</h3><p class="card-price">Rp 16.000</p><button class="btn-primary buy-btn" data-id="9" data-nama="Keychain (Logo PNM)" data-harga="16000">+ Keranjang</button></div>
         </div>
     </section>
@@ -158,7 +137,8 @@
                 <div id="cart-items-list" style="margin: 15px 0;"></div>
                 <div class="cart-total" id="cart-total-price">Total: Rp 0</div>
                 <div class="form-group"><label>Nama Lengkap</label><input type="text" id="input-nama" class="form-input"></div>
-                <div class="form-group"><label>No. WhatsApp</label><input type="number" id="input-wa" class="form-input" placeholder="08xxxxxxxx"></div>
+                <!-- Label WA diubah menjadi Kelas/Prodi agar seragam dengan kolom spreadsheet -->
+                <div class="form-group"><label>Kelas / Prodi / No. WA</label><input type="text" id="input-wa" class="form-input" placeholder="Contoh: 1A / D3 Teknik Listrik / 08xxx"></div>
                 <div class="form-group"><label>Catatan (Opsional)</label><input type="text" id="input-catatan" class="form-input"></div>
                 <button class="btn-primary" id="btn-lanjut-bayar" style="width: 100%; margin-top: 10px;">Lanjut Pembayaran</button>
             </div>
@@ -168,7 +148,7 @@
                 <h3 id="qris-total-tagihan" style="margin: 10px 0;">Rp 0</h3>
                 <div class="qris-img">
                     <img src="qris.jpeg" alt="QRIS BEM" style="max-width: 100%; max-height: 100%; border-radius: 10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <div style="display: none; padding: 20px; color: black;">Pastikan file qris.jpg tersedia</div>
+                    <div style="display: none; padding: 20px; color: black;">Pastikan file qris.jpeg tersedia</div>
                 </div>
                 <div class="form-group" style="margin-top: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
                     <label style="color: #fff; font-weight: bold;">Upload Bukti Transfer</label>
@@ -237,7 +217,7 @@
 
         document.getElementById('btn-lanjut-bayar').addEventListener('click', function() {
             if (keranjang.length === 0) return alert("Keranjang kosong!");
-            if(!document.getElementById('input-nama').value || !document.getElementById('input-wa').value) return alert("Isi Nama dan No. WA!");
+            if(!document.getElementById('input-nama').value || !document.getElementById('input-wa').value) return alert("Isi Nama dan Data Kelas/Prodi/WA!");
             document.getElementById('step-1-form').style.display = 'none';
             document.getElementById('step-2-qris').style.display = 'block';
         });
@@ -251,37 +231,65 @@
             }
         });
 
+        // MESIN PENGIRIM KE GOOGLE APPS SCRIPT
         document.getElementById('btn-sudah-bayar').addEventListener('click', function() {
             if(!base64Bukti) return alert("Mohon upload foto bukti transfer!");
 
+            const btnSubmit = this;
             const nama = document.getElementById('input-nama').value;
-            const wa = document.getElementById('input-wa').value;
+            const prodi = document.getElementById('input-wa').value;
             const catatan = document.getElementById('input-catatan').value;
 
+            // Merangkum keranjang belanja menjadi teks
+            let daftarBeli = keranjang.map(item => `${item.nama} (x${item.qty})`).join(', ');
+            let pesananLengkap = daftarBeli + (catatan ? ` | Catatan: ${catatan}` : '');
+
+            // Mengambil file gambar asli
+            const fileInput = document.getElementById('input-bukti');
+            const file = fileInput.files[0];
+            const fileContent = base64Bukti.split(',')[1]; 
+
+            // Susun data untuk dikirim ke Webhook Apps Script
             const dataPesanan = {
-                namaPemesan: nama, wa: wa, catatan: catatan,
-                waktu: new Date().toLocaleString('id-ID'),
-                keranjang: keranjang, buktiBayar: base64Bukti
+                nama: nama,
+                prodi: prodi, 
+                pesanan: pesananLengkap,
+                fileContent: fileContent,
+                fileName: file ? file.name : "struk.jpg",
+                mimeType: file ? file.type : "image/jpeg"
             };
 
-            this.innerText = "Memproses Data...";
-            this.style.background = "#6d28d9";
+            // Ubah tombol jadi loading
+            btnSubmit.innerText = "Memproses Data...";
+            btnSubmit.style.background = "#6d28d9";
+            btnSubmit.disabled = true;
 
-            fetch('/api/pesan', {
+            // Link Webhook Anda
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzfhC2FvthLNuKVyyisyXUPa4n6RwLuqsirrgYh8Dy_-T1D9-bKeG9ytUqMQm2YPLfXiw/exec';
+
+            // Kirim langsung ke Google
+            fetch(scriptURL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dataPesanan)
-            }).then(() => {
-                alert("Berhasil! Mengarahkan ke WhatsApp Admin...");
-                let daftarBeli = keranjang.map(item => `${item.nama} (x${item.qty})`).join(', ');
-                let teksWa = `Halo CS BEM KMPNM! 👋\n\nSaya sudah memesan dan transfer:\n*Nama:* ${nama}\n*Pesanan:* ${daftarBeli}\n*Catatan:* ${catatan || '-'}\n\nBukti bayar sudah diupload di web. Mohon segera diproses ya!`;
+            })
+            .then(response => {
+                alert("Berhasil! Data tersimpan di Spreadsheet dan Anda akan diarahkan ke WhatsApp Admin...");
+                
+                // Format teks untuk CS 1 (Tiara)
+                let teksWa = `Halo CS BEM KMPNM! 👋\n\nSaya sudah memesan dan mentransfer:\n*Nama:* ${nama}\n*Identitas:* ${prodi}\n*Pesanan:* ${daftarBeli}\n*Catatan:* ${catatan || '-'}\n\nBukti bayar sudah otomatis masuk ke sistem. Mohon segera diproses ya!`;
+                
+                // Buka WhatsApp di tab baru
                 window.open(`https://wa.me/6285895973138?text=${encodeURIComponent(teksWa)}`, '_blank');
-
-                keranjang = []; updateCartUI(); base64Bukti = ""; document.getElementById('input-bukti').value = ""; 
-                document.getElementById('input-nama').value = ''; document.getElementById('input-wa').value = ''; document.getElementById('input-catatan').value = '';
-                modal.style.display = 'none';
-                this.innerText = "Kirim Bukti Pembayaran"; this.style.background = "#059669";
-            }).catch(() => alert("Terjadi kesalahan server."));
+                
+                // Refresh web agar kembali kosong
+                location.reload(); 
+            })
+            .catch(error => {
+                alert("Terjadi kesalahan koneksi saat mengirim data. Coba lagi.");
+                btnSubmit.innerText = "Kirim Bukti Pembayaran";
+                btnSubmit.style.background = "#059669";
+                btnSubmit.disabled = false;
+            });
         });
     </script>
 </body>
