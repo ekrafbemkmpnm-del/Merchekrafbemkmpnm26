@@ -56,7 +56,7 @@ app.post('/api/pesan', (req, res) => {
         databasePesanan.push(pesananBaru);
 
         // LINK WEBHOOK APPS SCRIPT YANG BARU SUDAH TERPASANG DI SINI
-        const urlGoogleSheets = 'https://script.google.com/macros/s/AKfycbzfhC2FvthLNuKVyyisyXUPa4n6RwLuqsirrgYh8Dy_-T1D9-bKeG9ytUqMQm2YPLfXiw/exec'; 
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzfhC2FvthLNuKVyyisyXUPa4n6RwLuqsirrgYh8Dy_-T1D9-bKeG9ytUqMQm2YPLfXiw/exec';
 
         fetch(urlGoogleSheets, {
             method: 'POST',
