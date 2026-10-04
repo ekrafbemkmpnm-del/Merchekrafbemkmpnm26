@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin Merchandise</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        
+        /* Tema Gelap Senada dengan Halaman Pembeli */
+        body { 
+            background-color: #050414; 
+            background-image: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%), 
+                              radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.15), transparent 25%); 
+            color: #ffffff; 
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* Container Glassmorphism */
+        .container { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(15px); 
+            padding: 30px; 
+            border-radius: 15px; 
+        }
+
+        h1 { color: #fff; margin-bottom: 5px; font-weight: 800; font-size: 2rem; }
+        .subtitle { color: #a1a1aa; margin-bottom: 20px; }
+
+        /* KOTAK LOGIN */
+        .login-box { max-width: 400px; margin: 100px auto; text-align: center; }
+        .login-box h2 { margin-bottom: 20px; font-size: 2rem; }
+        .form-input { 
+            width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; 
+            border: 1px solid #2d3748; background: #1a202c; color: white; outline: none; font-size: 1rem;
+        }
+        .btn-primary { 
+            background: linear-gradient(90deg, #6d28d9, #2563eb); color: white; border: none; 
+            padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: 600; width: 100%; font-size: 1rem;
+        }
+        .error-msg { color: #ef4444; margin-top: 10px; display: none; font-size: 0.9rem; }
+
+        /* DASHBOARD ADMIN */
+        #dashboard-section { display: none; }
+        
+        .header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-logout { background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        .btn-excel { background: #107c41; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-bottom: 20px; }
+        
+        .summary { display: flex; gap: 20px; margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; border-left: 5px solid #8b5cf6; }
+        .summary-box h3 { margin: 0 0 5px 0; color: #a1a1aa; font-size: 0.9rem; }
+        .summary-box p { margin: 0; font-size: 1.5rem; font-weight: bold; color: #8b5cf6; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.95rem; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        th { background-color: rgba(109, 40, 217, 0.4); color: white; font-weight: 600; }
+        
+        .untung { color: #10b981; font-weight: bold; }
+        .btn-aksi { background: #25d366; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.85rem; display: inline-block; margin-top: 5px; }
+        .btn-bukti { background: #3b82f6; } 
+    </style>
+</head>
+<body>
+
+    <!-- HALAMAN LOGIN -->
+    <div id="login-section" class="container login-box">
+        <h2>🔒 Admin Login</h2>
+        <p class="subtitle">Silakan login untuk masuk ke Dashboard</p>
+        <input type="text" id="username" class="form-input" placeholder="Username">
+        <input type="password" id="password" class="form-input" placeholder="Password">
+        <button class="btn-primary" onclick="cekLogin()">Masuk</button>
+        <p id="error-msg" class="error-msg">Username atau Password salah!</p>
+    </div>
+
+    <!-- HALAMAN DASHBOARD (Disembunyikan sebelum login) -->
+    <div id="dashboard-section" class="container">
+        <div class="header-dash">
+            <div>
+                <h1>Dashboard Admin</h1>
+                <p class="subtitle">Rekap Pesanan Merchandise BEM KMPNM</p>
+            </div>
+            <button class="btn-logout" onclick="logout()">Keluar (Logout)</button>
+        </div>
+        
+        <button class="btn-excel" onclick="downloadExcel()">📥 Download Rekap Excel</button>
+        
+        <div class="summary">
+            <div class="summary-box"><h3>Total Pesanan Masuk</h3><p id="total-item">0 Item</p></div>
+            <div class="summary-box"><h3>Total Keuntungan Bersih</h3><p id="total-untung">Rp 0</p></div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Waktu</th>
+                    <th>Data Pemesan</th>
+                    <th>Detail Belanjaan</th>
+                    <th>Keuangan</th>
+                    <th>Bukti Transfer</th>
+                </tr>
+            </thead>
+            <tbody id="tabel-pesanan"></tbody>
+        </table>
+    </div>
+
+    <!-- Library untuk Ekspor Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <script>
+        // ==========================================
+        // SISTEM LOGIN ADMIN
+        // ==========================================
+        const dataAdmin = {
+            "syahil": "syahil123",
+            "gunawan": "G123456789", // <-- SANDI GUNAWAN SUDAH DIGANTI DI SINI
+            "tiara": "tiara123",
+            "laila": "laila123"
+        };
+
+        // Cek apakah sudah login sebelumnya
+        if (sessionStorage.getItem("adminLogedIn") === "true") {
+            bukaDashboard();
+        }
+
+        function cekLogin() {
+            const user = document.getElementById("username").value.toLowerCase().trim();
+            const pass = document.getElementById("password").value;
+            const errorMsg = document.getElementById("error-msg");
+
+            if (dataAdmin[user] && dataAdmin[user] === pass) {
+                sessionStorage.setItem("adminLogedIn", "true");
+                bukaDashboard();
+            } else {
+                errorMsg.style.display = "block";
+            }
+        }
+
+        function bukaDashboard() {
+            document.getElementById("login-section").style.display = "none";
+            document.getElementById("dashboard-section").style.display = "block";
+            muatData(); // Mulai load data dari server
+        }
+
+        function logout() {
+            sessionStorage.removeItem("adminLogedIn");
+            window.location.reload(); // Refresh halaman kembali ke login
+        }
+
+        // ==========================================
+        // SISTEM DASHBOARD & AMBIL DATA
+        // ==========================================
+        function muatData() {
+            // Hanya muat data kalau sudah login
+            if (sessionStorage.getItem("adminLogedIn") !== "true") return;
+
+            fetch('/api/riwayat-pesanan')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('tabel-pesanan');
+                    tbody.innerHTML = ''; 
+                    let totalKeuntungan = 0;
+
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 30px; color: #a1a1aa;">Belum ada pesanan masuk.</td></tr>';
+                    } else {
+                        data.forEach(pesanan => {
+                            totalKeuntungan += pesanan.keuntungan;
+                            let noWa = pesanan.wa || "";
+                            let linkWa = noWa.startsWith("0") ? "https://wa.me/62" + noWa.substring(1) : "#";
+                            
+                            let tombolBukti = pesanan.buktiBayar 
+                                ? `<a href="${pesanan.buktiBayar}" target="_blank" class="btn-aksi btn-bukti">Lihat Struk</a>` 
+                                : `<span style="color:#ef4444; font-size: 0.85rem;">Tidak ada struk</span>`;
+
+                            const row = `<tr>
+                                <td><small style="color: #a1a1aa;">${pesanan.waktu}</small></td>
+                                <td><strong>${pesanan.namaPemesan || "-"}</strong><br><a href="${linkWa}" target="_blank" class="btn-aksi">Chat WA</a></td>
+                                <td><strong>${pesanan.namaProduk}</strong><br><small style="color: #a1a1aa;">Catatan: ${pesanan.catatan || "-"}</small></td>
+                                <td>Rp ${pesanan.hargaJual.toLocaleString('id-ID')}<br><span class="untung">Untung: Rp ${pesanan.keuntungan.toLocaleString('id-ID')}</span></td>
+                                <td>${tombolBukti}</td>
+                            </tr>`;
+                            tbody.innerHTML += row;
+                        });
+                    }
+                    document.getElementById('total-item').innerText = `${data.length} Pesanan`;
+                    document.getElementById('total-untung').innerText = `Rp ${totalKeuntungan.toLocaleString('id-ID')}`;
+                });
+        }
+
+        function downloadExcel() {
+            let tabel = document.querySelector("table");
+            let bukuKerja = XLSX.utils.table_to_book(tabel, {sheet: "Data Pesanan"});
+            XLSX.writeFile(bukuKerja, "Rekap_Merchandise_Ekraf.xlsx");
+        }
+
+        // Auto-refresh data setiap 5 detik (jika sedang di dashboard)
+        setInterval(muatData, 5000); 
+    </script>
+</body>
+</html>

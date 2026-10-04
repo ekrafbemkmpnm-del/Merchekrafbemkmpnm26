@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMPNM Merchandise</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background-color: #050414; background-image: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%), radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.15), transparent 25%); color: #ffffff; overflow-x: hidden; }
+
+        /* Navbar */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5, 4, 20, 0.8); backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 100; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
+        .logo span { color: #8b5cf6; }
+        .btn-primary { background: linear-gradient(90deg, #6d28d9, #2563eb); color: white; border: none; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: 600; transition: transform 0.2s; }
+        .btn-primary:hover { transform: scale(1.05); }
+        
+        /* Hero Section */
+        .hero { display: flex; align-items: center; justify-content: center; padding: 150px 5% 80px; min-height: 70vh; text-align: center; }
+        .hero-text { max-width: 800px; margin: 0 auto; }
+        .hero-text h1 { font-size: 4rem; margin-bottom: 20px; font-weight: 800; line-height: 1.1; }
+        .hero-text p { color: #a1a1aa; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5; }
+
+        /* Katalog Produk */
+        .popular { padding: 50px 5%; text-align: center; }
+        .popular h2 { font-size: 2.5rem; margin-bottom: 40px; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; align-items: stretch; }
+        .glass-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 15px; padding: 15px; text-align: left; display: flex; flex-direction: column; transition: transform 0.3s, border-color 0.3s; }
+        .glass-card:hover { transform: translateY(-10px); border-color: #8b5cf6; }
+        
+        /* Gambar Card 1:1 */
+        .card-img { width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; margin-bottom: 15px; background: #1a1a2e; }
+        .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 5px; flex-grow: 1; }
+        .card-price { color: #8b5cf6; font-weight: 800; font-size: 1.1rem; margin-bottom: 15px;}
+        .buy-btn { width: 100%; margin-top: auto; padding: 10px; }
+
+        /* Footer */
+        footer { padding: 60px 5%; background: rgba(5, 4, 20, 0.9); border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; margin-top: 50px; }
+        .footer-title { font-size: 2rem; margin-bottom: 15px; color: #fff; }
+        .contact-container { display: flex; justify-content: center; gap: 30px; margin-top: 30px; margin-bottom: 40px; flex-wrap: wrap; }
+        .contact-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); padding: 25px 40px; border-radius: 15px; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; }
+        .contact-name { font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; color: #fff; }
+        .contact-role { color: #a1a1aa; font-size: 0.95rem; margin-bottom: 20px; }
+        .btn-wa { background: #25d366; color: white; text-decoration: none; padding: 10px 25px; border-radius: 30px; font-weight: bold; }
+        .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; text-decoration: none; padding: 10px 25px; border-radius: 30px; font-weight: bold; }
+
+        /* Modal & Keranjang */
+        .floating-cart { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(90deg, #db2777, #9333ea); color: white; padding: 15px 25px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; gap: 10px; }
+        .cart-badge { background: white; color: #9333ea; padding: 2px 8px; border-radius: 20px; font-size: 1rem; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal-content { background: rgba(10,10,25,0.95); border: 1px solid #4f46e5; padding: 30px; border-radius: 15px; width: 95%; max-width: 450px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #a1a1aa; }
+        .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid #2d3748; padding: 10px 0; font-size: 0.9rem; }
+        .cart-total { font-size: 1.3rem; font-weight: bold; color: #8b5cf6; text-align: right; margin: 15px 0; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; color: #a1a1aa; }
+        .form-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2d3748; background: #1a202c; color: white; outline: none; font-family: 'Outfit', sans-serif; }
+        .qris-area { display: none; text-align: center; }
+        .qris-img { width: 250px; height: 250px; background: #fff; margin: 20px auto; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #000; }
+
+        /* =========================================
+           KODE AJAIB UNTUK TAMPILAN HP (MOBILE) 
+           ========================================= */
+        @media (max-width: 768px) {
+            nav { padding: 15px 5%; }
+            .logo { font-size: 1.2rem; }
+            .btn-primary { padding: 8px 15px; font-size: 0.85rem; }
+            
+            /* Mengecilkan judul raksasa di HP */
+            .hero { padding: 120px 5% 50px; min-height: auto; }
+            .hero-text h1 { font-size: 2.2rem; }
+            .hero-text p { font-size: 1rem; }
+            
+            .popular { padding: 30px 5%; }
+            .popular h2 { font-size: 1.8rem; margin-bottom: 25px; }
+            
+            /* Kontak berjejer ke bawah di HP */
+            .contact-container { flex-direction: column; gap: 15px; }
+            .contact-card { padding: 20px; width: 100%; }
+            
+            /* Keranjang di HP disesuaikan posisinya */
+            .floating-cart { bottom: 20px; right: 20px; padding: 12px 20px; font-size: 1rem; }
+            
+            /* Grid produk akan otomatis jadi 1 kolom di layar HP kecil */
+            .grid-cards { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+            .glass-card { padding: 10px; }
+            .card-title { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">2026<span>MERCH</span></div>
+        <button class="btn-primary" onclick="document.getElementById('kontak').scrollIntoView({behavior: 'smooth'})">Hubungi Kami</button>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text gsap-hero">
+            <h1>Koleksi Merchandise Resmi KMPNM</h1>
+            <!-- Teks jualan yang baru -->
+            <p>Miliki koleksi merchandise eksklusif dan original BEM KMPNM. Lengkapi gayamu dengan produk kebanggaan kampus!</p>
+            <button class="btn-primary" onclick="document.querySelector('.popular').scrollIntoView({behavior: 'smooth'})">Mulai Belanja</button>
+        </div>
+    </section>
+
+    <!-- KATALOG PRODUK -->
+    <section class="popular">
+        <h2 class="gsap-title">Katalog Produk</h2>
+        <div class="grid-cards">
+            
+            <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('lanyard.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Lanyard</h3><p class="card-price">Rp 17.000</p><button class="btn-primary buy-btn" data-id="1" data-nama="Lanyard" data-harga="17000">+ Keranjang</button></div>
+            
+            <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('gelas.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Gelas Custom</h3><p class="card-price">Rp 26.000</p><button class="btn-primary buy-btn" data-id="2" data-nama="Gelas Custom" data-harga="26000">+ Keranjang</button></div>
+            
+            <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('totebag.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Totebag Custom</h3><p class="card-price">Rp 35.500</p><button class="btn-primary buy-btn" data-id="3" data-nama="Totebag Custom" data-harga="35500">+ Keranjang</button></div>
+            
+            <div class="glass-card gsap-card" style="grid-column: span 1;">
+                <div class="card-img" style="background-image: url('stiker.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div>
+                <h3 class="card-title">Stiker KMPNM</h3>
+                <p style="color: #a1a1aa; font-size: 0.85rem; margin-bottom: 10px;">Pilih jenis bahan cetak:</p>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto;">
+                    <button class="btn-primary buy-btn" data-id="4" data-nama="Stiker Biasa" data-harga="6500" style="background: linear-gradient(90deg, #374151, #1f2937); font-size: 0.9rem; padding: 8px;">Biasa (Rp 6.500)</button>
+                    <button class="btn-primary buy-btn" data-id="5" data-nama="Stiker Anti Air" data-harga="10500" style="font-size: 0.9rem; padding: 8px;">Anti Air (Rp 10.500)</button>
+                </div>
+            </div>
+
+            <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('kaoskaki.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Kaos Kaki Putih</h3><p class="card-price">Rp 16.000</p><button class="btn-primary buy-btn" data-id="6" data-nama="Kaos Kaki Putih" data-harga="16000">+ Keranjang</button></div>
+            
+            <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('notebook.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Note Book Custom A5</h3><p class="card-price">Rp 15.500</p><button class="btn-primary buy-btn" data-id="7" data-nama="Note Book Custom A5" data-harga="15500">+ Keranjang</button></div>
+            
+            <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('keychain-kereta.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Keychain (Kereta)</h3><p class="card-price">Rp 16.000</p><button class="btn-primary buy-btn" data-id="8" data-nama="Keychain (Kereta)" data-harga="16000">+ Keranjang</button></div>
+            
+            <div class="glass-card gsap-card"><div class="card-img" style="background-image: url('keychain-pnm.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div><h3 class="card-title">Keychain (Logo PNM)</h3><p class="card-price">Rp 16.000</p><button class="btn-primary buy-btn" data-id="9" data-nama="Keychain (Logo PNM)" data-harga="16000">+ Keranjang</button></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="kontak">
+        <h2 class="footer-title">Hubungi Kami</h2>
+        <div class="contact-container">
+            <div class="contact-card"><div class="contact-name">TIARA</div><div class="contact-role">CS 1</div><a href="https://wa.me/6285895973138" target="_blank" class="btn-wa">Chat WhatsApp</a></div>
+            <div class="contact-card"><div class="contact-name">LAILA</div><div class="contact-role">CS 2</div><a href="https://wa.me/6281999783021" target="_blank" class="btn-wa">Chat WhatsApp</a></div>
+            <div class="contact-card"><div class="contact-name">INSTAGRAM</div><div class="contact-role">@ekraf_bemkmpnm</div><a href="https://instagram.com/ekraf_bemkmpnm" target="_blank" class="btn-ig">Kunjungi IG</a></div>
+        </div>
+    </footer>
+
+    <div class="floating-cart" id="open-cart">🛒 <span class="cart-badge" id="cart-count">0</span></div>
+
+    <!-- MODAL PEMBAYARAN -->
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal-content" id="modal-box">
+            <span class="close-btn" id="close-modal">&times;</span>
+            
+            <div id="step-1-form">
+                <h2>Keranjang Belanja</h2>
+                <div id="cart-items-list" style="margin: 15px 0;"></div>
+                <div class="cart-total" id="cart-total-price">Total: Rp 0</div>
+                <div class="form-group"><label>Nama Lengkap</label><input type="text" id="input-nama" class="form-input"></div>
+                <div class="form-group"><label>No. WhatsApp</label><input type="number" id="input-wa" class="form-input" placeholder="08xxxxxxxx"></div>
+                <div class="form-group"><label>Catatan (Opsional)</label><input type="text" id="input-catatan" class="form-input"></div>
+                <button class="btn-primary" id="btn-lanjut-bayar" style="width: 100%; margin-top: 10px;">Lanjut Pembayaran</button>
+            </div>
+
+            <div id="step-2-qris" class="qris-area">
+                <h2 style="color: #8b5cf6;">Scan QRIS</h2>
+                <h3 id="qris-total-tagihan" style="margin: 10px 0;">Rp 0</h3>
+                <div class="qris-img">
+                    <img src="qris.jpg" alt="QRIS BEM" style="max-width: 100%; max-height: 100%; border-radius: 10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display: none; padding: 20px; color: black;">Pastikan file qris.jpg tersedia</div>
+                </div>
+                <div class="form-group" style="margin-top: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                    <label style="color: #fff; font-weight: bold;">Upload Bukti Transfer</label>
+                    <input type="file" id="input-bukti" class="form-input" accept="image/*" style="padding: 5px;">
+                </div>
+                <button class="btn-primary" id="btn-sudah-bayar" style="width: 100%; background: #059669;">Kirim Bukti Pembayaran</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT (LOGIKA) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        gsap.from(".logo, .btn-primary", { y: -50, opacity: 0, duration: 1, ease: "power3.out" });
+        gsap.from(".gsap-hero > *", { y: 30, opacity: 0, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.3 });
+
+        let keranjang = [];
+        let base64Bukti = "";
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = keranjang.length;
+            const listDiv = document.getElementById('cart-items-list');
+            let total = 0;
+            listDiv.innerHTML = '';
+            
+            if (keranjang.length === 0) {
+                listDiv.innerHTML = '<p style="color: #a1a1aa; text-align: center;">Keranjang masih kosong</p>';
+            } else {
+                keranjang.forEach(item => {
+                    total += item.harga * item.qty;
+                    listDiv.innerHTML += `<div class="cart-item"><span>${item.nama} (x${item.qty})</span><span>Rp ${(item.harga * item.qty).toLocaleString('id-ID')}</span></div>`;
+                });
+            }
+            document.getElementById('cart-total-price').innerText = `Total: Rp ${total.toLocaleString('id-ID')}`;
+            document.getElementById('qris-total-tagihan').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                const nama = this.getAttribute('data-nama');
+                const harga = parseInt(this.getAttribute('data-harga'));
+                
+                const existing = keranjang.find(item => item.id === id);
+                if (existing) existing.qty += 1;
+                else keranjang.push({ id, nama, harga, qty: 1 });
+                
+                updateCartUI();
+                gsap.fromTo("#open-cart", { scale: 1.2 }, { scale: 1, duration: 0.4, ease: "bounce.out" });
+            });
+        });
+
+        const modal = document.getElementById('cart-modal');
+        const modalBox = document.getElementById('modal-box');
+        
+        document.getElementById('open-cart').addEventListener('click', () => {
+            document.getElementById('step-1-form').style.display = 'block';
+            document.getElementById('step-2-qris').style.display = 'none';
+            modal.style.display = 'flex';
+            gsap.fromTo(modalBox, { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.5)" });
+        });
+        
+        document.getElementById('close-modal').addEventListener('click', () => {
+            gsap.to(modalBox, { y: -50, opacity: 0, duration: 0.3, onComplete: () => modal.style.display = 'none' });
+        });
+
+        document.getElementById('btn-lanjut-bayar').addEventListener('click', function() {
+            if (keranjang.length === 0) return alert("Keranjang kosong!");
+            if(!document.getElementById('input-nama').value || !document.getElementById('input-wa').value) return alert("Isi Nama dan No. WA!");
+            document.getElementById('step-1-form').style.display = 'none';
+            document.getElementById('step-2-qris').style.display = 'block';
+        });
+
+        document.getElementById('input-bukti').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) { base64Bukti = evt.target.result; };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('btn-sudah-bayar').addEventListener('click', function() {
+            if(!base64Bukti) return alert("Mohon upload foto bukti transfer!");
+
+            const nama = document.getElementById('input-nama').value;
+            const wa = document.getElementById('input-wa').value;
+            const catatan = document.getElementById('input-catatan').value;
+
+            const dataPesanan = {
+                namaPemesan: nama, wa: wa, catatan: catatan,
+                waktu: new Date().toLocaleString('id-ID'),
+                keranjang: keranjang, buktiBayar: base64Bukti
+            };
+
+            this.innerText = "Memproses Data...";
+            this.style.background = "#6d28d9";
+
+            fetch('/api/pesan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataPesanan)
+            }).then(() => {
+                alert("Berhasil! Mengarahkan ke WhatsApp Admin...");
+                let daftarBeli = keranjang.map(item => `${item.nama} (x${item.qty})`).join(', ');
+                let teksWa = `Halo CS BEM KMPNM! 👋\n\nSaya sudah memesan dan transfer:\n*Nama:* ${nama}\n*Pesanan:* ${daftarBeli}\n*Catatan:* ${catatan || '-'}\n\nBukti bayar sudah diupload di web. Mohon segera diproses ya!`;
+                window.open(`https://wa.me/6285895973138?text=${encodeURIComponent(teksWa)}`, '_blank');
+
+                keranjang = []; updateCartUI(); base64Bukti = ""; document.getElementById('input-bukti').value = ""; 
+                document.getElementById('input-nama').value = ''; document.getElementById('input-wa').value = ''; document.getElementById('input-catatan').value = '';
+                modal.style.display = 'none';
+                this.innerText = "Kirim Bukti Pembayaran"; this.style.background = "#059669";
+            }).catch(() => alert("Terjadi kesalahan server."));
+        });
+    </script>
+</body>
+</html>
