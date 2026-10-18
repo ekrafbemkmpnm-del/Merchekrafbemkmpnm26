@@ -302,15 +302,15 @@
         <div class="video-overlay"></div>
 
         <div class="badge-org gsap-intro">Kementerian Ekonomi Kreatif • BEM KMPNM 2026</div>
-        <h1 class="intro-title gsap-intro">Tunjukkan Identitas & Kebanggaanmu Bersama <span>Kementerian Ekonomi Kreatif </span></h1>
+        <h1 class="intro-title gsap-intro">Tunjukkan Identitas & Kebanggaanmu Bersama <span>Ekraf KMPNM</span></h1>
         <p class="intro-desc gsap-intro">
-            Selamat datang di portal resmi pemesanan Merchandise Kementerian Ekonomi Kreatif. Dirancang khusus untuk mahasiswa dengan kualitas terbaik, desain modern, dan harga terjangkau.
+            Selamat datang di portal resmi pemesanan Merchandise Eksklusif BEM Keluarga Mahasiswa Politeknik Negeri Madiun. Dirancang khusus untuk mahasiswa dengan kualitas terbaik, desain modern, dan harga terjangkau.
         </p>
 
         <div class="feature-boxes gsap-intro">
             <div class="feature-item">
                 <h4>✨ Desain Eksklusif</h4>
-                <p>Koleksi terbatas edisi 2026.</p>
+                <p>Koleksi terbatas edisi khusus mahasiswa Politeknik Negeri Madiun 2026.</p>
             </div>
             <div class="feature-item">
                 <h4>⚡ Pemesanan Mudah</h4>
@@ -470,7 +470,7 @@
             ease: "power3.out" 
         });
 
-        // Fungsi Berpindah dari Halaman Perkenalan ke Katalog (DIJAMIN RATA SEJAJAR)
+        // Fungsi Berpindah dari Halaman Perkenalan ke Katalog
         window.bukaKatalog = function() {
             gsap.to("#intro-screen", {
                 opacity: 0,
@@ -494,7 +494,7 @@
                             duration: 0.5, 
                             stagger: 0.06, 
                             ease: "power2.out",
-                            clearProps: "transform" // Menghapus sisa transform agar 100% lurus sejajar
+                            clearProps: "transform"
                         }
                     );
                 }
@@ -614,7 +614,7 @@
         });
 
         // ==========================================
-        // MESIN PENGIRIM KE GOOGLE APPS SCRIPT
+        // MESIN PENGIRIM KE GOOGLE APPS SCRIPT (VERSI 7 + ANTI-CORS)
         // ==========================================
         document.getElementById('btn-sudah-bayar').addEventListener('click', function() {
             if(!base64Bukti) return alert("Mohon upload foto bukti transfer terlebih dahulu!");
@@ -655,13 +655,18 @@
             btnSubmit.style.background = "#6d28d9";
             btnSubmit.disabled = true;
 
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwoYBlMKNbs86ubZv_qQMyMxH9Z4j4h_FIT0I1II4XZ5A0gcWPAmdbW6ecR_ZUBBu0nng/exec';
+            // URL APLIKASI WEB VERSI 7 RESMI (/exec) + MODE NO-CORS
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwoYBIMKNbs86ubZv_qQMyMxH9Z4j4h_FIT0I1II4XZ5A0gcWPAmdbW6ecR_ZUBBu0nng/exec';
 
             fetch(scriptURL, {
                 method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
                 body: JSON.stringify(dataPesanan)
             })
-            .then(response => {
+            .then(() => {
                 alert("Berhasil! Data tersimpan di Spreadsheet dan Anda akan diarahkan ke WhatsApp Admin...");
                 let teksWa = `Halo CS BEM KMPNM! 👋\n\nSaya sudah memesan merchandise:\n*Nama:* ${nama}\n*Identitas/No:* ${prodi}\n*Pesanan:* ${daftarBeli}\n*Catatan:* ${catatan || '-'}\n\nBukti bayar sudah otomatis masuk ke Google Sheets. Mohon segera diproses ya!`;
                 window.open(`https://wa.me/6285895973138?text=${encodeURIComponent(teksWa)}`, '_blank');
