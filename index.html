@@ -170,7 +170,7 @@
         .hero-text h1 { font-size: 3.2rem; margin-bottom: 12px; font-weight: 800; line-height: 1.1; }
         .hero-text p { color: #a1a1aa; font-size: 1.1rem; line-height: 1.5; }
 
-        /* Katalog Produk - DIKUNCI AGAR RATA & SEJAJAR 100% */
+        /* Katalog Produk */
         .popular { padding: 20px 5% 60px; max-width: 1400px; margin: 0 auto; }
         .grid-cards { 
             display: grid; 
@@ -194,7 +194,6 @@
             box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
         }
         
-        /* Gambar Card */
         .card-img { 
             width: 100%; 
             aspect-ratio: 1 / 1; 
@@ -255,7 +254,6 @@
         .modal-content { background: rgba(10,10,25,0.98); border: 1px solid #4f46e5; padding: 30px; border-radius: 15px; width: 95%; max-width: 450px; max-height: 90vh; overflow-y: auto; position: relative; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #a1a1aa; }
         
-        /* Desain Item Keranjang & Tombol QTY */
         .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid #2d3748; padding: 15px 0; font-size: 0.95rem; align-items: center; }
         .qty-controls { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 2px; }
         .qty-btn { background: #4f46e5; color: white; border: none; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; transition: background 0.2s; }
@@ -302,9 +300,9 @@
         <div class="video-overlay"></div>
 
         <div class="badge-org gsap-intro">Kementerian Ekonomi Kreatif • BEM KMPNM 2026</div>
-        <h1 class="intro-title gsap-intro">Tunjukkan Identitas & Kebanggaanmu Bersama <span>Kementerian Ekonomi Kreatif </span></h1>
+        <h1 class="intro-title gsap-intro">Tunjukkan Identitas & Kebanggaanmu Bersama <span>Ekraf KMPNM</span></h1>
         <p class="intro-desc gsap-intro">
-            Selamat datang di portal resmi pemesanan Merchandise Kementerian Ekonomi Kreatif. Dirancang khusus untuk mahasiswa dengan kualitas terbaik, desain modern, dan harga terjangkau.
+            Selamat datang di portal resmi pemesanan Merchandise Eksklusif BEM Keluarga Mahasiswa Politeknik Negeri Madiun. Dirancang khusus untuk mahasiswa dengan kualitas terbaik, desain modern, dan harga terjangkau.
         </p>
 
         <div class="feature-boxes gsap-intro">
@@ -347,7 +345,7 @@
             </div>
         </section>
 
-        <!-- KATALOG PRODUK (SEJAJAR RAPI) -->
+        <!-- KATALOG PRODUK -->
         <section class="popular">
             <div class="grid-cards">
                 <div class="glass-card">
@@ -461,7 +459,6 @@
     <script>
         const bgVideo = document.getElementById("bg-vid");
 
-        // Animasi Awal Saat Halaman Perkenalan Dibuka
         gsap.from(".gsap-intro", { 
             y: 35, 
             opacity: 0, 
@@ -470,7 +467,6 @@
             ease: "power3.out" 
         });
 
-        // Fungsi Berpindah dari Halaman Perkenalan ke Katalog (DIJAMIN RATA SEJAJAR)
         window.bukaKatalog = function() {
             gsap.to("#intro-screen", {
                 opacity: 0,
@@ -494,14 +490,13 @@
                             duration: 0.5, 
                             stagger: 0.06, 
                             ease: "power2.out",
-                            clearProps: "transform" // Menghapus sisa transform agar 100% lurus sejajar
+                            clearProps: "transform"
                         }
                     );
                 }
             });
         };
 
-        // Fungsi Kembali ke Halaman Perkenalan
         window.kembaliKeIntro = function() {
             gsap.to("#store-screen", {
                 opacity: 0,
@@ -614,7 +609,7 @@
         });
 
         // ==========================================
-        // MESIN PENGIRIM KE GOOGLE APPS SCRIPT
+        // MESIN PENGIRIM KE GOOGLE APPS SCRIPT (URL RESMI)
         // ==========================================
         document.getElementById('btn-sudah-bayar').addEventListener('click', function() {
             if(!base64Bukti) return alert("Mohon upload foto bukti transfer terlebih dahulu!");
@@ -655,13 +650,19 @@
             btnSubmit.style.background = "#6d28d9";
             btnSubmit.disabled = true;
 
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwoYBlMKNbs86ubZv_qQMyMxH9Z4j4h_FIT0I1II4XZ5A0gcWPAmdbW6ecR_ZUBBu0nng/exec';
+            // URL APLIKASI WEB RESMI YANG KAMU KIRIM
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxO9lJ4I4xcxGbIsGLbJCsODqOvgKtTaBFzgUgyhiPDDhKtNvHcZN92W-kT0llf6m1GpQ/exec';
 
+            // Kirim menggunakan text/plain agar Google Apps Script membaca doPost tanpa blokir CORS
             fetch(scriptURL, {
                 method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
                 body: JSON.stringify(dataPesanan)
             })
-            .then(response => {
+            .then(() => {
                 alert("Berhasil! Data tersimpan di Spreadsheet dan Anda akan diarahkan ke WhatsApp Admin...");
                 let teksWa = `Halo CS BEM KMPNM! 👋\n\nSaya sudah memesan merchandise:\n*Nama:* ${nama}\n*Identitas/No:* ${prodi}\n*Pesanan:* ${daftarBeli}\n*Catatan:* ${catatan || '-'}\n\nBukti bayar sudah otomatis masuk ke Google Sheets. Mohon segera diproses ya!`;
                 window.open(`https://wa.me/6285895973138?text=${encodeURIComponent(teksWa)}`, '_blank');
